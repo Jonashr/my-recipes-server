@@ -3,7 +3,8 @@ const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
 const recipeRouter = require('./controllers/recipes')
-const db = require('./db')
+const middleware = require('./utils/middleware')
+
 
 app.use(morgan('dev'))
 app.use(express.static('build'))
@@ -12,5 +13,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
 app.use('/recipes', recipeRouter)
+
+app.use(middleware.errorHandler)
+app.use(middleware.unknownEndpoint)
 
 module.exports = app
